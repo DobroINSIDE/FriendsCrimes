@@ -3,13 +3,16 @@ package com.example.dmitry.friendscrimes;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class CrimeLab {
     private static CrimeLab sCrimeLab;
 
     private List<Crime> mCrimes;
+    private Map<UUID, Crime> crimeMap;
 
     public static CrimeLab get(Context context) {
         if (sCrimeLab == null) {
@@ -27,6 +30,11 @@ public class CrimeLab {
             crime.setSolved(i % 2 == 0);
             mCrimes.add(crime);
         }
+
+        crimeMap = new HashMap<>();
+        for (Crime crime : mCrimes){
+            crimeMap.put(crime.getId(), crime);
+        }
     }
 
     public List<Crime> getCrimes() {
@@ -34,12 +42,6 @@ public class CrimeLab {
     }
 
     public Crime getCrime(UUID id) {
-        for (Crime crime : mCrimes) {
-            if (crime.getId().equals(id)) {
-                return crime;
-            }
-        }
-
-        return null;
+        return crimeMap.get(id);
     }
 }

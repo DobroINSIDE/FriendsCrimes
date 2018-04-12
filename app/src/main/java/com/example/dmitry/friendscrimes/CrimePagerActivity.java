@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +20,8 @@ public class CrimePagerActivity extends AppCompatActivity {
     private static final String EXTRA_CRIME_ID =
             "com.bignerdranch.android.criminalintent.crime_id";
 
+    private Button mFirstCrimeButton;
+    private Button mLastCrimeButton;
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
 
@@ -59,5 +63,29 @@ public class CrimePagerActivity extends AppCompatActivity {
                 break;
             }
         }
+
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                mFirstCrimeButton.setEnabled(position > 0);
+                mLastCrimeButton.setEnabled(position < mCrimes.size() - 1);
+            }
+        });
+
+        mFirstCrimeButton = (Button)findViewById(R.id.first_crime);
+        mFirstCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(0);
+            }
+        });
+
+        mLastCrimeButton = (Button)findViewById(R.id.last_crime);
+        mLastCrimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewPager.setCurrentItem(mCrimes.size());
+            }
+        });
     }
 }
