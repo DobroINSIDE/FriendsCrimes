@@ -25,6 +25,7 @@ public class CrimePagerActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
 
+    //создаем интент с дополнением, содержащим crimeId
     public static Intent newIntent(Context packageContext, UUID crimeId) {
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
@@ -51,6 +52,7 @@ public class CrimePagerActivity extends AppCompatActivity {
                 return CrimeFragment.newInstance(crime.getId());
             }
 
+
             @Override
             public int getCount() {
                 return mCrimes.size();
@@ -64,6 +66,7 @@ public class CrimePagerActivity extends AppCompatActivity {
             }
         }
 
+        //блокировка кнопок "в начало" и "в конец"
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {
