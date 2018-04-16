@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
@@ -26,6 +28,7 @@ public class CrimeListFragment extends Fragment {
     private int adapterPosition;
     private boolean mSubtitleVisible;
 
+    private TextView mHelloTextView;
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
 
@@ -45,6 +48,19 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView = (RecyclerView) view
                 .findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mHelloTextView = (TextView) view.findViewById(R.id.hello);
+        mHelloTextView.setText(R.string.hello);
+        mHelloTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Crime crime = new Crime();
+                CrimeLab.get(getActivity()).addCrime(crime);
+                Intent intent = CrimePagerActivity
+                        .newIntent(getActivity(), crime.getId());
+                startActivity(intent);
+            }
+        });
 
         if (savedInstanceState != null){
             mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
@@ -123,7 +139,12 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         } else {
-            mAdapter.notifyItemChanged(adapterPosition);
+            mAdapter.setCrimes(crimes);
+            mAdapter.notifyDataSetChanged();
+        }
+
+        if (crimes.size() > 0){
+            mHelloTextView.setVisibility(View.INVISIBLE);
         }
 
         updateSubtitle();
@@ -194,6 +215,10 @@ public class CrimeListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mCrimes.size();
+        }
+
+        public void setCrimes(List<Crime> crimes){
+            mCrimes = crimes;
         }
     }
 }
