@@ -20,6 +20,10 @@ public class Crime {
         mDate = new Date();
     }
 
+    public String getPhotoFilename(){
+        return "IMG_" + getId().toString() + ".jpg";
+    }
+
     public String getSuspect() {
         return mSuspect;
     }
@@ -55,4 +59,5 @@ public class Crime {
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
+
 }
